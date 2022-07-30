@@ -19,7 +19,7 @@ circumvent the defense mechanism.
 
 - XSS Filter Test String:
 ```
-"><=(.)/`$,XSSfilterteststring
+ !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~XSSfilterteststring
 ```
 
 ## 𝐂𝐨𝐦𝐦𝐨𝐧 𝐑𝐞𝐟𝐥𝐞𝐜𝐭𝐢𝐨𝐧 𝐏𝐨𝐬𝐢𝐭𝐢𝐨𝐧𝐬
